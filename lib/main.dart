@@ -1,91 +1,89 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  static const String _title = 'Flutter Stateful Clicker Counter';
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: _title,
+      title: 'Flutter BIDDING APP',
       theme: ThemeData(
-        // useMaterial3: false,
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false, // This line removes the debug banner
+      home: const MaximumBid(title: 'FLUTTER BIDDING APP'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-  // This class is the configuration for the state.
+class MaximumBid extends StatefulWidget {
+  const MaximumBid({super.key, required this.title});
+
+  final String title;
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MaximumBid> createState() => _MaximumBidState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MaximumBidState extends State<MaximumBid> {
+  int _increaseBid = 100;
 
-  void _incrementCounter() {
+  void _incrementBid() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _increaseBid += 50;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text('Flutter Demo Click Counter'),
+        backgroundColor: Colors.orangeAccent, // Orange color for the AppBar
+        title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: [
+          Card(
+            color: Colors.orangeAccent, // Orange color for the Card
+            margin: const EdgeInsets.all(16.0),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    const Text(
+                      'Your current maximum bid is:',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    Text(
+                      '\$$_increaseBid',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: const TextStyle(fontSize: 25),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: FloatingActionButton.extended(
+              onPressed: _incrementBid,
+              tooltip: 'Increase Bid',
+              label: const Text('Increase Bid by \$50'),
+              icon: const Icon(Icons.add),
+              backgroundColor: Colors.orangeAccent, // Orange color for the FAB
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
